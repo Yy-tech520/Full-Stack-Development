@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>表单草稿箱</title>
+  <style>
+    #draftInput {
+      width: 300px;
+      padding: 8px;
+    }
+
+    #submitBtn {
+      padding: 6px 16px;
+      margin-left: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>表单草稿箱</h1>
+  </header>
+
+  <main>
+    <section>
+      <form action="" method="">
+        <fieldset>
+          <legend>表单信息</legend>
+
+          <input type="text" id="draftInput" placeholder="请输入内容，刷新页面不会丢失哦">
+
+          <button type="submit" id="submitBtn">提交</button>
+        </fieldset>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const draftInput = document.getElementById('draftInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const DRAFT_KEY = 'draft';
+
+    const savedDraft = localStorage.getItem(DRAFT_KEY);
+    if (savedDraft) {
+      draftInput.value = savedDraft;
+    }
+
+    if (draftInput.value.trim() === '') {
+      submitBtn.disabled = true;
+    }
+
+    draftInput.addEventListener('input', function () {
+      localStorage.setItem(DRAFT_KEY, draftInput.value)
+
+      submitBtn.disabled = draftInput.value.trim() === '';
+    })
+
+    submitBtn.addEventListener('click', function () {
+      console.log("提交的数据:", draftInput.value);
+
+      draftInput.value = '';
+      submitBtn.disabled = true;
+
+      localStorage.removeItem(DRAFT_KEY);
+
+      alert("提交成功！草稿箱已清空！");
+      location.reload();
+    })
+  </script>
+</body>
+
+</html>
